@@ -32,7 +32,7 @@ $ tar -xzvf
 
 Go in the extracted sub-directory "CDKAM". 
 Finally:
-source /opt/rh/devtoolset-6/enable
+
 $ ./install.sh
 
 4) Running
