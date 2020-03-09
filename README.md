@@ -5,9 +5,11 @@
 
 
 1) Introduction
+
 CDKAM is a new metagenome sequence classification tool for TGS data with high error rates
 
 2) Requirements
+
 Linux operation system, memory 50 GB, disk space 120 GB
 Perl 5.8.5 (or up) and g++ 6.4.0 (or up).
 Dustmasker https://www.ncbi.nlm.nih.gov/IEB/ToolBox/CPP_DOC/lxr/source/src/app/dustmasker/. 
@@ -18,6 +20,7 @@ The masked regions are not processed further by CDKAM.
 Datasets can be found at OneDrive: https://1drv.ms/u/s!AvI5WFKEnJrGcNO2PkmiFgBz3lk?e=r0zJXU
 
 3) Installation
+
 First, download the zipped package of the latest CDKAM release:
 $ wget https://github.com/buikiendp/CDKAM
 
@@ -30,6 +33,7 @@ source /opt/rh/devtoolset-6/enable
 $ ./install.sh
 
 4) Running
+
 Downloading database:
 ./download --standard --db $DBname
 Building database:
