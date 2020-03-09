@@ -6,7 +6,7 @@ Department of Bioinformatics and Biostatistics, Shanghai Jiao Tong University
 
 1) Introduction
 
-CDKAM is a new metagenome sequence classification tool for TGS data with high error rates
+CDKAM is a new metagenome sequence classification tool for the third generation sequencing data with high error rates
 
 2) Requirements
 
@@ -39,8 +39,10 @@ $ ./install.sh
 
 Downloading database:
 ./download --standard --db $DBname
+
 Building database:
 ./build_database.sh $DBname
+
 Run classification:
 ./CDKAM.sh $DBname input output --fastq
 
