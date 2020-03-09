@@ -16,9 +16,9 @@ Perl 5.8.5 (or up) and g++ 6.4.0 (or up).
 
 Dustmasker https://www.ncbi.nlm.nih.gov/IEB/ToolBox/CPP_DOC/lxr/source/src/app/dustmasker/. 
 
-It is suggested to install BLAST+ (ftp://ftp.ncbi.nlm.nih.gov/blast/executables/blast+/LATEST/), which has already included dustmasker
-Low-complexity sequences, e.g. "ACACACACACACACACA", "ATATATATATATATATAT" are known to occur in many different organisms and are typically less informative for use in alignments; 
-The masked regions are not processed further by CDKAM.
+It is suggested to install BLAST+ (ftp://ftp.ncbi.nlm.nih.gov/blast/executables/blast+/LATEST/), which has already included dustmasker.
+
+Low-complexity sequences, e.g. "ACACACACACACACACA", "ATATATATATATATATAT" are known to occur in many different organisms and are typically less informative for use in alignments. The masked regions are not processed further by CDKAM.
 
 Datasets can be found at OneDrive: https://1drv.ms/u/s!AvI5WFKEnJrGcNO2PkmiFgBz3lk?e=r0zJXU
 
