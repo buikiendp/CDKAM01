@@ -41,21 +41,3 @@ If you have any questions, feel free to contact us:
    buikien.dp@sjtu.edu.cn
    ccwei@sjtu.edu.cn
    
-   
-source /opt/rh/devtoolset-6/enable
-./download --standard --db DTB
-./build_database.sh DTB
-./buildDB DTB/targets.txt DTB/nameFamily.txt DTB/database_full.txt
-$LDIR/uniqueDB $LDIR/$1/database_full.txt $LDIR/$1/database
-全新演繹
-
-./classify DTB/database DTB/nameFamily.txt all.fastq output.txt --fasta
-./main DTB/database DTB/nameFamily.txt test70.fasta CDKAMnew0.txt --fasta
-
-./buildDB DTB/targets.txt DTB/nameFamily.txt DTB/database_full.txt
-./classify DTB/database10 DTB/nameFamily.txt test70.fasta CDKAMnew0.txt --fasta
-./main DTB/database10 DTB/nameFamily.txt test70error15.fasta out5.txt --fasta
-
-If you have any questions, feel free to contact us:
-   buikien.dp@sjtu.edu.cn
-   ccwei@sjtu.edu.cn
