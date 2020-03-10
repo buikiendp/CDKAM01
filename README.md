@@ -1,4 +1,4 @@
-# CDKAM, Classification tool using Discriminative K-mers and Approximate Matching strategy
+# CDKAM
 Copyright 2019-2020
 Author: Bui Van-Kien (buikien.dp@sjtu.edu.cn)  
 Department of Bioinformatics and Biostatistics, Shanghai Jiao Tong University
@@ -6,7 +6,7 @@ Department of Bioinformatics and Biostatistics, Shanghai Jiao Tong University
 
 1) Introduction
 
-CDKAM is a new metagenome sequence classification tool for the third generation sequencing data with high error rates
+
 
 2) Requirements
 
@@ -30,21 +30,10 @@ $ wget https://github.com/buikiendp/CDKAM
 Second, uncompress the package:
 $ tar -xzvf 
 
-Go in the extracted sub-directory "CDKAM". 
-Finally:
 
-$ ./install.sh
 
 4) Running
 
-Downloading database:
-./download --standard --db $DBname
-
-Building database:
-./build_database.sh $DBname
-
-Run classification:
-./CDKAM.sh $DBname input output --fastq
 
 If you have any questions, feel free to contact us:
    buikien.dp@sjtu.edu.cn
