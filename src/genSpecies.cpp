@@ -1,9 +1,8 @@
 /**
-# CDKAM, Classification tool using Discriminative K-mers and Approximate Matching strategy
+# CDKAM: a metagenomic classification tool using discriminative k-mers and approximate matching strategy
 # Copyright 2019-2020
-# Author: Bui Van-Kien (buikien.dp@sjtu.edu.cn)
 # Department of Bioinformatics and Biostatistics, Shanghai Jiao Tong University
-# Copyright 2019-2020
+# Contact information: buikien.dp@sjtu.edu.cn, ccwei@sjtu.edu.cn
 #
 # Function: Generating each species's genome from .fna file
 */
@@ -43,28 +42,28 @@ vector<string> tokenize(const string& row) {
 }
 
 inline int get_code(char c) {
-  if (c == 'A') return 0;
-  if (c == 'T') return 1;
-  if (c == 'C') return 2;
-  if (c == 'G') return 3;
-  return 0;
+    if (c == 'A') return 0;
+    if (c == 'T') return 1;
+    if (c == 'C') return 2;
+    if (c == 'G') return 3;
+    return 0;
 }
 
 inline char print_code(int c) {
-  if (c == 0) return 'A';
-  if (c == 1) return 'T';
-  if (c == 2) return 'C';
-  if (c == 3) return 'G';
-  return 'N';
+    if (c == 0) return 'A';
+    if (c == 1) return 'T';
+    if (c == 2) return 'C';
+    if (c == 3) return 'G';
+    return 'N';
 }
 
-int toNum(string s){
+int toNum(string s) {
     int ans = 0;
     FO (i,0,s.size()) ans = ans*10 + s[i] - 48;
     return ans;
 }
 
-string toString(int n){
+string toString(int n) {
     if (n == -1) return "-1";
     string ans = "";
     while (n){
@@ -74,7 +73,7 @@ string toString(int n){
     return ans;
 }
 
-uint64_t toNumDNA(string &s, int a, int len){
+uint64_t toNumDNA(string &s, int a, int len) {
     LL ans = 0;
     for (int i = a; i < a+len; i++) {
         ans <<= 2;
@@ -89,7 +88,7 @@ void usage(){
 }
 
 
-int main(int argc, char **argv){
+int main(int argc, char **argv) {
     if(argc != 5) { usage(); exit(1); }
     ifstream fin(argv[1]);
     ifstream fin2(argv[2]);
@@ -98,7 +97,7 @@ int main(int argc, char **argv){
     int maxx = 2700000, cnt = 0;
     FOR(i,1,3000000) parent[i] = IIS("",0);
     string t;
-    while (getline(fin2, t)){
+    while (getline(fin2, t)) {
         cnt++;
         vector<string> V = tokenize(t);
         FOR(i,0,2)
@@ -112,12 +111,12 @@ int main(int argc, char **argv){
     fin2.close();
 
     string taxid;
-	while (fin >> taxid){
+	while (fin >> taxid) {
 	    vector<string> V = tokenize(taxid); /// CDKAM|1054217|NC_020892.1
         int strainID = toNum(V[1]);
         int phylumID = -1, classID = -1, orderID = -1, familyID = -1, genusID = -1, speciesID = strainID;
         int st = strainID;
-        while (st != 131567){
+        while (st != 131567) {
             if (st <= 2) break;
             if (parent[st].first == "species")      speciesID = st;
             else if(parent[st].first == "genus")    genusID = st;
@@ -141,9 +140,9 @@ int main(int argc, char **argv){
     string s, oldFile = "";
     vector<string> Genome;
     vector<IIS> Vlink;
-    while (getline(fin3, s)){
-        if (s[0] == '>'){
-            if (oldFile.size() > 0){
+    while (getline(fin3, s)) {
+        if (s[0] == '>') {
+            if (oldFile.size() > 0) {
                 vector<string> V = tokenize(oldFile);
                 string file = "references/" + V[1] + "|" + V[2] + ".txt";
                 int id = toNum(V[1]);
