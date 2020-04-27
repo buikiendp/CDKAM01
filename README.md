@@ -32,11 +32,8 @@ https://www.st-va.ncbi.nlm.nih.gov/bioproject/PRJNA493153
 
 - First, download the package of the latest CDKAM release: https://github.com/buikiendp/CDKAM
 
-- Second, uncompress the package:\
-$ tar -xzvf 
-
 - Go in the extracted sub-directory "CDKAM". 
-Finally:\
+Then:\
 $ ./install.sh
 
 **5) Running CDKAM**
