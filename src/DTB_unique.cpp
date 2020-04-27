@@ -1,9 +1,8 @@
 /**
-# CDKAM, Classification tool using Discriminative K-mers and Approximate Matching strategy
+# CDKAM: a metagenomic classification tool using discriminative k-mers and approximate matching strategy
 # Copyright 2019-2020
-# Author: Bui Van-Kien (buikien.dp@sjtu.edu.cn)
 # Department of Bioinformatics and Biostatistics, Shanghai Jiao Tong University
-# Copyright 2019-2020
+# Contact information: buikien.dp@sjtu.edu.cn, ccwei@sjtu.edu.cn
 #
 # Function: Removing kmers that are shared by at least two genomes
 */
@@ -22,60 +21,60 @@ template<class T> T offbit(T s, int i) { return s & (~(T(1) << i)); }
 template<class T> int cntbit(T s) { return __builtin_popcount(s);}
 typedef pair<uint32_t, uint32_t> II32;
 
-/***************************************************************/
 
+/***************************************************************/
 #include <sys/time.h>
 #include <sys/resource.h>
 inline void printRam() {
-  struct rusage ru;
-  getrusage(RUSAGE_SELF, &ru);
-  cerr << "Max ram (in kilobytes): " << ru.ru_maxrss << endl;
+    struct rusage ru;
+    getrusage(RUSAGE_SELF, &ru);
+    cerr << "Max ram (in kilobytes): " << ru.ru_maxrss << endl;
 }
 
 namespace Time{
-  double start_time, time_limit;
-  static double last_call = 0;
-  int get_time_calls = 0;
+    double start_time, time_limit;
+    static double last_call = 0;
+    int get_time_calls = 0;
 
-  double get_time() {
-    get_time_calls++;
-    timeval tv;
-    gettimeofday(&tv, 0);
-    return tv.tv_sec+tv.tv_usec*1e-6;
-  }
+    double get_time() {
+        get_time_calls++;
+        timeval tv;
+        gettimeofday(&tv, 0);
+        return tv.tv_sec+tv.tv_usec*1e-6;
+    }
 
-  void print_time(string s) {
+    void print_time(string s) {
 #ifdef LOCAL
     double x = get_time();
     fprintf(stderr,"%s cur=%.6lf lap=%.6lf\n",s.c_str(),x,x-last_call);
     last_call = x;
 #endif
-  }
+    }
 
-  void init_time() {
-    start_time = get_time();
-    last_call = start_time;
-  }
+    void init_time() {
+        start_time = get_time();
+        last_call = start_time;
+    }
 }
-
 /******************************************************************/
 
 
 
+
 inline int get_code(char c) {
-  if (c == 'A') return 0;
-  if (c == 'C') return 1;
-  if (c == 'G') return 2;
-  if (c == 'T') return 3;
-  return 0;
+    if (c == 'A') return 0;
+    if (c == 'C') return 1;
+    if (c == 'G') return 2;
+    if (c == 'T') return 3;
+    return 0;
 }
 
 inline char print_code(int c) {
-  if (c == 0) return 'A';
-  if (c == 1) return 'C';
-  if (c == 2) return 'G';
-  if (c == 3) return 'T';
-  return 'N';
+    if (c == 0) return 'A';
+    if (c == 1) return 'C';
+    if (c == 2) return 'G';
+    if (c == 3) return 'T';
+    return 'N';
 }
 
 
@@ -83,7 +82,7 @@ inline char print_code(int c) {
 
 
 const int KMER = 32, PREFIX = 14, MAXBIT = 1<<(2*PREFIX);
-uint64_t RIGHT16 = 0;
+uint64_t RIGHT16 = 4294967295;
 
 
 class HashTable {
@@ -94,36 +93,42 @@ public:
     ~HashTable(){
         delete[] mTable;
     };
+
     void init(){
         mTable = new vector<II32> [MAXBIT];
     }
+
     void insert(int id, uint32_t val, uint32_t taxa) {
         mTable[id].push_back(II32(val, taxa));
     }
 
     void sortData() {
         int cntRemove = 0;
-        FO (i,0,MAXBIT) if(mTable[i].size() > 2) {
-            sort(mTable[i].begin(), mTable[i].end());
-            Vtmp.clear();         Vtmp.shrink_to_fit();
-            int dem = 1;
-            mTable[i].push_back(II32(-1,-1));
-            FO (j,0,mTable[i].size()-1) {
-                if(mTable[i][j].first != mTable[i][j+1].first) {
-                    if(dem == 1)
-                        Vtmp.push_back(mTable[i][j]);
+        FO (i,0,MAXBIT) {
+            if (mTable[i].size() > 2) {
+                sort(mTable[i].begin(), mTable[i].end());
+                Vtmp.clear();
+                Vtmp.shrink_to_fit();
+                int freq = 1;
+                mTable[i].push_back(II32(-1,-1));
+                FO (j,0,mTable[i].size()-1) {
+                    if (mTable[i][j].first != mTable[i][j+1].first) {
+                        if(freq == 1)
+                            Vtmp.push_back(mTable[i][j]);
+                        else {
+                            freq = 1;
+                            cntRemove++;
+                        }
+                    }
                     else {
-                        dem = 1;
+                        freq++;
                         cntRemove++;
                     }
                 }
-                else {
-                    dem++;
-                    cntRemove++;
-                }
+                mTable[i].clear();
+                mTable[i].shrink_to_fit();
+                mTable[i] = Vtmp;
             }
-            mTable[i].clear(); mTable[i].shrink_to_fit();
-            mTable[i] = Vtmp;
         }
         DEBUG(cntRemove);
     }
@@ -132,7 +137,7 @@ public:
 HashTable HT;
 
 
-uint64_t reverseMask3(uint64_t _ikmer, int m_k) { /// m_k = size of Kmer
+uint64_t reverseMask3(uint64_t _ikmer, int m_k) {
     uint64_t _ikmerR = _ikmer;
     // The following 6 lines come from Jellyfish source code
     _ikmerR = ((_ikmerR >> 2)  & 0x3333333333333333UL) | ((_ikmerR & 0x3333333333333333UL) << 2);
@@ -161,11 +166,10 @@ int main(int argc, char **argv) {
     ofstream foutSuffix(fileSuffix.c_str(), ofstream::binary);
     ofstream foutTaxo(fileTaxo.c_str(), ofstream::binary);
 
-    FO (i, 0, 16) { RIGHT16 = onbit(RIGHT16, 2*i); RIGHT16 = onbit(RIGHT16, 2*i+1); }
     uint64_t cntDB = 0;
     HT.init();
     double main_time = Time::get_time();
-    DEBUG("START READING");
+    DEBUG("Start reading");
 
     uint32_t taxaID;
     uint64_t tmp;
@@ -199,7 +203,8 @@ int main(int argc, char **argv) {
 	FO (i,0,MAXBIT) {
 	    uint32_t sz = HT.mTable[i].size();
 	    foutSize.write((char *) &sz, sizeof(sz));
-	    if (sz == 0) cntNum++;
+	    if (sz == 0)
+            cntNum++;
         for (auto u : HT.mTable[i]) {
             //cout << u.fi << " " << u.se << "\n";
             foutSuffix.write((char *) &u.first, sizeof(u.first));
@@ -209,8 +214,6 @@ int main(int argc, char **argv) {
     foutSize.close();
     foutSuffix.close();
     foutTaxo.close();
-    DEBUG(cntNum);
-    //*/
 
     return 0;
 }
