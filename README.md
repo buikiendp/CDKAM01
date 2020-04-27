@@ -44,7 +44,8 @@ $ ./install.sh
 ./build_database.sh $DBname
 
 - Running classification:\
-./CDKAM.sh $DBname input output --fastq
+./CDKAM.sh $DBname input output --fasta\--fastq \
+Using --fasta if the input is FASTA file, --fastq if the input is FASTQ file.
 
 - Running translation:\
 ./translate $DBname input output\
