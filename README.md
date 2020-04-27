@@ -40,20 +40,16 @@ Finally:\
 $ ./install.sh
 
 **5) Running CDKAM**
-- Downloading database:
-
+- Downloading database:\
 ./download --standard --db $DBname
 
-- Building database:
-
+- Building database:\
 ./build_database.sh $DBname
 
-- Running classification:
-
+- Running classification:\
 ./CDKAM.sh $DBname input output --fastq
 
-- Running translation:
-
+- Running translation:\
 ./translate $DBname input output\
 ,where input is the result of the previous classification process.
 
@@ -67,7 +63,7 @@ Example:
 - *2	733	28116*
 - *3	886	590*
 
-Translation\
+Translation mode\
 (Read ID) (Species/Genus taxonomy ID) (Genus taxonomy ID) (S/G) Scientific Name
 
 Example:
